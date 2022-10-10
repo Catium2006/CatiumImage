@@ -3,6 +3,27 @@
 
 ## 数据库搭建
 用`createdb.sql`.  
+数据库建好之后, 在mgmt表中插入一行, 然后记着替换成你自己的密码还有网页访问网址.  
+```sql
+INSERT INTO `img_upload`.`mgmt`
+(`id`,
+`password_md5`,
+`background_img`,
+`grid_img`,
+`visit_count`,
+`file_count`,
+`notice`,
+`domain`)
+VALUES
+(0,
+'cHaNgEMe',
+'',
+'',
+0,
+0,
+'图床开业大吉',
+'https://img.example.com/');
+```
 
 
 ## 网页搭建

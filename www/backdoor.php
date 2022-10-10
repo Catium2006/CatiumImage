@@ -23,26 +23,6 @@ function isAdmin()
     return checkPasswdMD5($_COOKIE["passwd"]);
 }
 
-function getBackgroundImg()
-{
-    return exec_sql("SELECT background_img FROM mgmt WHERE id = 0")[0]['background_img'];
-}
-
-function getGridImg()
-{
-    return exec_sql("SELECT grid_img FROM mgmt WHERE id = 0")[0]['grid_img'];
-}
-
-function getCount()
-{
-    return exec_sql("SELECT file_count FROM mgmt WHERE id = 0")[0]['file_count'];
-}
-
-function getNotice()
-{
-    return exec_sql("SELECT notice FROM mgmt WHERE id = 0")[0]['notice'];
-}
-
 function setNotice($arg)
 {
     exec_sql("UPDATE mgmt SET notice = '$arg' WHERE id = 0");
@@ -337,8 +317,8 @@ if ($_GET['function'] != null && isAdmin()) {
                                                 let url = <?php echo '"' . $v['file_name_short'] . '"' ?>;
                                                 let arrURL = document.URL.split("//");
                                                 let end = arrURL[1].indexOf("/");
-                                                let host = "https://i.catium.top:81/";
-                                                url = host + url;
+                                                let host = "<?php echo getDomain() ?>";
+                                                url = host + "upload/" + url;
                                                 let mdurl = "![" + "](" + url + ")";
                                                 let p = document.createElement('input');
                                                 // p.innerText = mdurl;

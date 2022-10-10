@@ -34,11 +34,11 @@ if ($_COOKIE["upload"] != "wait") {
             $file_name_short = substr($file_md5, 0, 6) . "." . $extension;
             $file_name_original = $file['name'];
             if (file_exists("upload/" . $file_name_short)) {
-                $url =  "upload/" . $file_name_short;
+                $url =  getDomain() . "upload/" . $file_name_short;
                 echo '{"status":"same","result":"' . $url . '"}';
             } else {
+                $url =  getDomain() . "upload/" . $file_name_short;
                 move_uploaded_file($file["tmp_name"], "upload/" . $file_name_short);
-                $url =  "upload/" . $file_name_short;
                 $sql = "INSERT INTO records(file_name_original,file_name_short,file_md5,file_size,upload_time) VALUE('" . $file_name_original . "','" . $file_name_short . "','" . $file_md5 . "'," . $file['size'] . ",current_timestamp);";
                 exec_sql($sql);
                 $sql = "UPDATE mgmt SET file_count = file_count + 1 WHERE id = 0";
