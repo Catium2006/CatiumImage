@@ -3,7 +3,7 @@
 
 ## 数据库搭建
 用`createdb.sql`.  
-数据库建好之后, 在mgmt表中插入一行, 然后记着替换成你自己的密码还有网页访问网址.  
+数据库建好之后, 在mgmt表中插入一行, 然后记着替换成你自己的密码MD5还有网页访问网址.  
 ```sql
 INSERT INTO `img_upload`.`mgmt`
 (`id`,
@@ -16,7 +16,7 @@ INSERT INTO `img_upload`.`mgmt`
 `domain`)
 VALUES
 (0,
-'cHaNgEMe',
+'aSimpleMD5StringOfYourPassword',
 '',
 '',
 0,
