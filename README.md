@@ -6,6 +6,7 @@
 数据库建好之后, 在mgmt表中插入一行, 然后记着替换成你自己的密码MD5还有网页访问网址.  
 ```sql
 INSERT INTO `img_upload`.`mgmt`
+INSERT INTO `img_upload`.`mgmt`
 (`id`,
 `password_md5`,
 `background_img`,
@@ -13,16 +14,19 @@ INSERT INTO `img_upload`.`mgmt`
 `visit_count`,
 `file_count`,
 `notice`,
-`domain`)
+`domain`,
+`adminmail`)
 VALUES
 (0,
-'aSimpleMD5StringOfYourPassword',
+'<{password_md5: }>',
 '',
 '',
 0,
 0,
 '图床开业大吉',
-'https://img.example.com/');
+'https://img.example.com/',
+'admin@example.com');
+
 ```
 
 
@@ -32,3 +36,7 @@ VALUES
 
 如果出现白屏, 500错误, Access Denied, 之类的报错请检查www下文件权限.  
 `www/upload/`权限也要检查一下, 上传的图片都保存在这里.  
+
+
+## 邮件服务
+需要配合postfix之类的邮件服务器, 并自行处理外域邮箱收发相关问题.  
