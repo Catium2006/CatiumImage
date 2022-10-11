@@ -11,10 +11,10 @@ CREATE TABLE `mgmt` (
   `file_count` int DEFAULT NULL,
   `notice` varchar(1024) DEFAULT NULL,
   `domain` varchar(256) DEFAULT NULL,
+  `adminmail` varchar(128) DEFAULT 'root@localhost',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
-
 
 CREATE TABLE `records` (
   `file_name_original` char(255) NOT NULL,

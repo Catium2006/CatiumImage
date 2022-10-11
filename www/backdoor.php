@@ -23,9 +23,33 @@ function isAdmin()
     return checkPasswdMD5($_COOKIE["passwd"]);
 }
 
+function setPassword($passwd)
+{
+
+    $adminmail = exec_sql("SELECT adminmail FROM mgmt WHERE id = 0")[0]['adminmail'];
+
+    $title = "Password Changed";
+
+    $message = "
+    <p>Hi there!</p>
+    <p>The administrator password of your CatiumImage(" . getDomain() . ") has changed, check it please!</p>
+    <p>New password: <pre>$passwd</pre></p>";
+
+    $headers = "Content-Type: text/html; charset=UTF-8";
+
+    if (mail($adminmail, $title, $message, $headers, '')) {
+        $passwdmd5 = md5($passwd);
+        exec_sql("UPDATE mgmt SET password_md5 = '$passwdmd5' WHERE id = 0");
+        return "ok";
+    } else {
+        return "failed: can't exec mail().";
+    }
+}
+
 function setNotice($arg)
 {
     exec_sql("UPDATE mgmt SET notice = '$arg' WHERE id = 0");
+    return "ok";
 }
 
 //删除图片
@@ -87,7 +111,10 @@ if ($_GET['function'] != null && isAdmin()) {
         echo setGrid($_GET['arg']);
     }
     if ($target == 'setNotice') {
-        setNotice($_GET['arg']);
+        echo setNotice($_GET['arg']);
+    }
+    if ($target == 'setPassword') {
+        echo setPassword($_GET['arg']);
     }
     exit();
 }
@@ -221,8 +248,14 @@ if ($_GET['function'] != null && isAdmin()) {
         ?>
             <div style="position:fixed;top:0px;right:10px;z-index:100;background-color:rgba(0.8,0.8,0.8,0.5);font-size:20px;">
                 <p>设置公告</p>
+                <!-- input-notice -->
                 <input id="input-notice" style="font-size:20px;line-height:20px;height:30px;word-break:break-all;" type="text" value="<?php echo getNotice(); ?>">
                 <button style="font-size:20px;" onclick="setNotice()">提交</button>
+                <br>
+                <p>修改密码</p>
+                <!-- input-password -->
+                <input id="input-password" style="font-size:20px;line-height:20px;height:30px;word-break:break-all;" type="password">
+                <button style="font-size:20px;" onclick="setPassword()">提交</button>
             </div>
             <!-- 隐藏的加载画面 -->
             <div id="dashboard" class="dashboard_frame">
@@ -343,7 +376,8 @@ if ($_GET['function'] != null && isAdmin()) {
                                         <?php echo $v['file_name_short'] ?>
                                     </td>
                                     <!-- <td class="td">
-                                        <?php echo substr($v['file_md5'], 0, 16) . '...' ?>
+                                        <?php //echo substr($v['file_md5'], 0, 16) . '...' 
+                                        ?>
                                     </td> -->
                                     <td class="td">
                                         <?php echo sprintf("%.1f", $v['file_size'] / 1024) . 'KB' ?>
@@ -535,7 +569,43 @@ if (isAdmin()) {
             let arg = "" + document.getElementById("input-notice").value;
             fetch('?function=setNotice&arg=' + arg, {
                 method: "GET",
-            }).then(function(data) {}).catch(function(err) {
+            }).then(function(data) {
+                data.text().then(s => {
+                    console.log("function response:" + s);
+                    if (s == "ok") {
+                        alert("设置成功");
+                        window.location.reload;
+                    } else {
+                        console.log("设置失败:" + s);
+                        alert("设置失败");
+                    }
+                });
+            }).catch(function(err) {
+                console.log(err);
+            }).finally(function() {
+                toast.style.display = "none";
+                // window.location.reload();
+            });
+        }
+
+        function setPassword() {
+            let arg = "" + document.getElementById("input-password").value;
+            console.log('password:' + arg);
+            fetch('?function=setPassword&arg=' + arg, {
+                method: "GET",
+            }).then(function(data) {
+                // console.log(data);
+                data.text().then(s => {
+                    console.log("function response:" + s);
+                    if (s == "ok") {
+                        alert("设置成功");
+                        window.location.reload;
+                    } else {
+                        console.log("设置失败:" + s);
+                        alert("设置失败");
+                    }
+                });
+            }).catch(function(err) {
                 console.log(err);
             }).finally(function() {
                 toast.style.display = "none";
