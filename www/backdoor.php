@@ -102,19 +102,20 @@ function remove_surfix($str, $surfix)
 if ($_GET['function'] != null && isAdmin()) {
     $target = $_GET['function'];
     if ($target == 'deleteFile') {
-        echo deleteFile($_GET['arg']);
+        echo deleteFile($_POST['arg']);
     }
     if ($target == 'setBackground') {
-        echo setBackground($_GET['arg']);
+        echo setBackground($_POST['arg']);
     }
     if ($target == 'setGrid') {
-        echo setGrid($_GET['arg']);
+        echo setGrid($_POST['arg']);
     }
     if ($target == 'setNotice') {
-        echo setNotice($_GET['arg']);
+        echo setNotice($_POST['arg']);
+        // echo json_encode($_POST);
     }
     if ($target == 'setPassword') {
-        echo setPassword($_GET['arg']);
+        echo setPassword($_POST['arg']);
     }
     exit();
 }
@@ -249,7 +250,7 @@ if ($_GET['function'] != null && isAdmin()) {
             <div style="position:fixed;top:0px;right:10px;z-index:100;background-color:rgba(0.8,0.8,0.8,0.5);font-size:20px;">
                 <p>设置公告</p>
                 <!-- input-notice -->
-                <input id="input-notice" style="font-size:20px;line-height:20px;height:30px;word-break:break-all;" type="text" value="<?php echo getNotice(); ?>">
+                <textarea id="input-notice" style="font-size:15px;line-height:15px;height:60px;" value="<?php echo getNotice(); ?>"><?php echo getNotice(); ?></textarea>
                 <button style="font-size:20px;" onclick="setNotice()">提交</button>
                 <br>
                 <p>修改密码</p>
@@ -498,8 +499,11 @@ if (isAdmin()) {
                 url = url.split("//")[1];
                 url = url.split("/")[2];
                 console.log("尝试设置背景为" + url)
-                fetch('?function=setBackground&arg=' + url, {
-                    method: "GET",
+                let form = new FormData();
+                form.append("arg", url);
+                fetch('?function=setBackground', {
+                    method: "POST",
+                    body: form
                 }).then(function(data) {
                     data.text().then(s => {
                         console.log("function response:" + s);
@@ -535,8 +539,11 @@ if (isAdmin()) {
                 toast.style.display = "flex";
                 url = url.split("//")[1];
                 url = url.split("/")[2];
-                fetch('?function=setGrid&arg=' + url, {
-                    method: "GET",
+                let form = new FormData();
+                form.append("arg", url);
+                fetch('?function=setGrid', {
+                    method: "POST",
+                    body: form
                 }).then(function(data) {
                     data.text().then(s => {
                         console.log("function response:" + s);
@@ -567,8 +574,12 @@ if (isAdmin()) {
 
         function setNotice() {
             let arg = "" + document.getElementById("input-notice").value;
-            fetch('?function=setNotice&arg=' + arg, {
-                method: "GET",
+            console.log(arg);
+            let form = new FormData();
+            form.append("arg", arg);
+            fetch('?function=setNotice', {
+                method: "POST",
+                body: form
             }).then(function(data) {
                 data.text().then(s => {
                     console.log("function response:" + s);
@@ -591,8 +602,11 @@ if (isAdmin()) {
         function setPassword() {
             let arg = "" + document.getElementById("input-password").value;
             console.log('password:' + arg);
-            fetch('?function=setPassword&arg=' + arg, {
-                method: "GET",
+            let form = new FormData();
+            form.append("arg", arg);
+            fetch('?function=setPassword', {
+                method: "POST",
+                body: form
             }).then(function(data) {
                 // console.log(data);
                 data.text().then(s => {
@@ -622,8 +636,11 @@ if (isAdmin()) {
                 url = url.split("//")[1];
                 url = url.split("/")[2];
                 console.log("尝试删除" + url)
-                fetch('?function=deleteFile&arg=' + url, {
-                    method: "GET",
+                let form = new FormData();
+                form.append("arg", url);
+                fetch('?function=setNotice', {
+                    method: "POST",
+                    body: form
                 }).then(function(data) {
                     data.text().then(s => {
                         console.log("function response:" + s);

@@ -107,7 +107,6 @@ include("db.php");
         let pdiv = document.createElement("div");
         pdiv.style = "width: 100%; height: auto; border:0px;text-align:center;vertical-align: middle;margin: 0 auto;"
 
-
         let ptext = document.createElement("p");
         ptext.style = "font-size:20px;font-color:black;font-weight:550;";
         ptext.appendChild(document.createTextNode("上传成功!"));
