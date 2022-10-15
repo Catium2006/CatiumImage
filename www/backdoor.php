@@ -62,7 +62,7 @@ function deleteFile($filename_short)
             exec_sql($sql);
             $sql = "UPDATE mgmt SET file_count = file_count - 1 WHERE id = 0";
             exec_sql($sql);
-            return "ok" . $filename_short;
+            return "ok";
         } else {
             return "unlink failed: " . $target;
         }
