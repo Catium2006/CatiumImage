@@ -62,7 +62,7 @@ function deleteFile($filename_short)
             exec_sql($sql);
             $sql = "UPDATE mgmt SET file_count = file_count - 1 WHERE id = 0";
             exec_sql($sql);
-            return "ok";
+            return "ok" . $filename_short;
         } else {
             return "unlink failed: " . $target;
         }
@@ -638,7 +638,7 @@ if (isAdmin()) {
                 console.log("尝试删除" + url)
                 let form = new FormData();
                 form.append("arg", url);
-                fetch('?function=setNotice', {
+                fetch('?function=deleteFile', {
                     method: "POST",
                     body: form
                 }).then(function(data) {
